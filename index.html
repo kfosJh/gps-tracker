@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS Tracker</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial; }
+        #map { height: 500px; border: 2px solid #333; }
+        .data { background: #f0f0f0; padding: 15px; margin: 10px 0; border-radius: 10px; }
+    </style>
+    <style>
+        body {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: white;
+}
+
+#map {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+    </style>
+</head>
+<body>
+    <h1>ًںڑ— ظ…ظˆظ‚ط¹ طھطھط¨ط¹ GPS</h1>
+    
+    <div class="data">
+        <p>ًں“چ <strong>ط§ظ„ط¥ط­ط¯ط§ط«ظٹط§طھ:</strong> <span id="coords">--, --</span></p>
+        <p>ًںڑ€ <strong>ط§ظ„ط³ط±ط¹ط©:</strong> <span id="speed">0</span> ظƒظ…/ط³</p>
+        <p>ًں›°ï¸ڈ <strong>ط§ظ„ط£ظ‚ظ…ط§ط±:</strong> <span id="sat">0</span></p>
+        <p>âڈ±ï¸ڈ <strong>ط¢ط®ط± طھط­ط¯ظٹط«:</strong> <span id="time">--:--:--</span></p>
+    </div>
+    
+    <div id="map"></div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // 1. طھظ‡ظٹط¦ط© ط§ظ„ط®ط±ظٹط·ط©
+        var map = L.map('map').setView([33.31, 44.42], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        
+        var marker = L.marker([33.31, 44.42]).addTo(map);
+        var path = L.polyline([], {color: 'red'}).addTo(map);
+        
+        // 2. ط¯ط§ظ„ط© ظ„ط¬ظ„ط¨ ط§ظ„ط¨ظٹط§ظ†ط§طھ
+        function fetchData() {
+            // ظ‡ظ†ط§ ط³ظ†ط¶ط¹ ط±ط§ط¨ط· ط§ظ„ط¨ظٹط§ظ†ط§طھ ط§ظ„ط­ظ‚ظٹظ‚ظٹ ظ„ط§ط­ظ‚ط§ظ‹
+            var testData = {
+                lat: 33.309772 + (Math.random() * 0.01 - 0.005),
+                lng: 44.421445 + (Math.random() * 0.01 - 0.005),
+                speed: (Math.random() * 100).toFixed(1),
+                sat: Math.floor(Math.random() * 12) + 4
+            };
+            
+            updateDisplay(testData);
+        }
+        
+        // 3. ط¯ط§ظ„ط© طھط­ط¯ظٹط« ط§ظ„ط¹ط±ط¶
+        function updateDisplay(data) {
+            document.getElementById('coords').textContent = 
+                data.lat.toFixed(6) + ', ' + data.lng.toFixed(6);
+            document.getElementById('speed').textContent = data.speed;
+            document.getElementById('sat').textContent = data.sat;
+            document.getElementById('time').textContent = new Date().toLocaleTimeString();
+            
+            // طھط­ط¯ظٹط« ط§ظ„ط®ط±ظٹط·ط©
+            var newPos = [data.lat, data.lng];
+            marker.setLatLng(newPos);
+            map.setView(newPos, 16);
+            
+            // طھط­ط¯ظٹط« ط§ظ„ظ…ط³ط§ط±
+            var currentPath = path.getLatLngs();
+            currentPath.push(newPos);
+            path.setLatLngs(currentPath);
+        }
+        
+        // 4. طھط­ط¯ظٹط« ظƒظ„ 3 ط«ظˆط§ظ†
+        setInterval(fetchData, 3000);
+        fetchData(); // ط§ظ„طھط´ط؛ظٹظ„ ط§ظ„ط£ظˆظ„
+    </script>
+</body>
+</html>
