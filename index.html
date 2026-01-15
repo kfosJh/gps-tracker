@@ -27,29 +27,29 @@
     </style>
 </head>
 <body>
-    <h1>ًںڑ— ظ…ظˆظ‚ط¹ طھطھط¨ط¹ GPS</h1>
+    <h1>🚗 موقع تتبع GPS</h1>
     
     <div class="data">
-        <p>ًں“چ <strong>ط§ظ„ط¥ط­ط¯ط§ط«ظٹط§طھ:</strong> <span id="coords">--, --</span></p>
-        <p>ًںڑ€ <strong>ط§ظ„ط³ط±ط¹ط©:</strong> <span id="speed">0</span> ظƒظ…/ط³</p>
-        <p>ًں›°ï¸ڈ <strong>ط§ظ„ط£ظ‚ظ…ط§ط±:</strong> <span id="sat">0</span></p>
-        <p>âڈ±ï¸ڈ <strong>ط¢ط®ط± طھط­ط¯ظٹط«:</strong> <span id="time">--:--:--</span></p>
+        <p>📍 <strong>الإحداثيات:</strong> <span id="coords">--, --</span></p>
+        <p>🚀 <strong>السرعة:</strong> <span id="speed">0</span> كم/س</p>
+        <p>🛰️ <strong>الأقمار:</strong> <span id="sat">0</span></p>
+        <p>⏱️ <strong>آخر تحديث:</strong> <span id="time">--:--:--</span></p>
     </div>
     
     <div id="map"></div>
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // 1. طھظ‡ظٹط¦ط© ط§ظ„ط®ط±ظٹط·ط©
+        // 1. تهيئة الخريطة
         var map = L.map('map').setView([33.31, 44.42], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         
         var marker = L.marker([33.31, 44.42]).addTo(map);
         var path = L.polyline([], {color: 'red'}).addTo(map);
         
-        // 2. ط¯ط§ظ„ط© ظ„ط¬ظ„ط¨ ط§ظ„ط¨ظٹط§ظ†ط§طھ
+        // 2. دالة لجلب البيانات
         function fetchData() {
-            // ظ‡ظ†ط§ ط³ظ†ط¶ط¹ ط±ط§ط¨ط· ط§ظ„ط¨ظٹط§ظ†ط§طھ ط§ظ„ط­ظ‚ظٹظ‚ظٹ ظ„ط§ط­ظ‚ط§ظ‹
+            // هنا سنضع رابط البيانات الحقيقي لاحقاً
             var testData = {
                 lat: 33.309772 + (Math.random() * 0.01 - 0.005),
                 lng: 44.421445 + (Math.random() * 0.01 - 0.005),
@@ -60,7 +60,7 @@
             updateDisplay(testData);
         }
         
-        // 3. ط¯ط§ظ„ط© طھط­ط¯ظٹط« ط§ظ„ط¹ط±ط¶
+        // 3. دالة تحديث العرض
         function updateDisplay(data) {
             document.getElementById('coords').textContent = 
                 data.lat.toFixed(6) + ', ' + data.lng.toFixed(6);
@@ -68,20 +68,20 @@
             document.getElementById('sat').textContent = data.sat;
             document.getElementById('time').textContent = new Date().toLocaleTimeString();
             
-            // طھط­ط¯ظٹط« ط§ظ„ط®ط±ظٹط·ط©
+            // تحديث الخريطة
             var newPos = [data.lat, data.lng];
             marker.setLatLng(newPos);
             map.setView(newPos, 16);
             
-            // طھط­ط¯ظٹط« ط§ظ„ظ…ط³ط§ط±
+            // تحديث المسار
             var currentPath = path.getLatLngs();
             currentPath.push(newPos);
             path.setLatLngs(currentPath);
         }
         
-        // 4. طھط­ط¯ظٹط« ظƒظ„ 3 ط«ظˆط§ظ†
+        // 4. تحديث كل 3 ثوان
         setInterval(fetchData, 3000);
-        fetchData(); // ط§ظ„طھط´ط؛ظٹظ„ ط§ظ„ط£ظˆظ„
+        fetchData(); // التشغيل الأول
     </script>
 </body>
 </html>
